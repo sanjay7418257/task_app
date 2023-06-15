@@ -11,7 +11,8 @@ import '../Drawer/feedback.dart';
 import 'notification.dart';
 
 class homeScreen extends StatefulWidget {
-  const homeScreen({super.key});
+  final bool isShow;
+  homeScreen({this.isShow = false, super.key});
 
   @override
   State<homeScreen> createState() => _homeScreenState();
@@ -37,14 +38,31 @@ class _homeScreenState extends State<homeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => notificationpage())));
-            },
-            icon: const Icon(
-              Icons.notifications_none_sharp,
-            ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => notificationpage())));
+                },
+                icon: const Icon(
+                  Icons.notifications_none_sharp,
+                ),
+              ),
+              Positioned(
+                right: 10,
+                top: 14,
+                child: Container(
+                  padding: EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.isShow
+                          ? Color(0xffffffff)
+                          : Colors.transparent),
+                ),
+              ),
+            ],
           ),
         ],
       ),

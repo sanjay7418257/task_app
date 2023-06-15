@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'homescreen.dart';
 
 class notificationpage extends StatefulWidget {
   const notificationpage({super.key});
@@ -9,6 +12,21 @@ class notificationpage extends StatefulWidget {
 }
 
 class _notificationpageState extends State<notificationpage> {
+  bool isCancelled = false;
+  bool isApproval = false;
+  void notifyData() async {
+    var snap = await FirebaseFirestore.instance
+        .collection('Leave details')
+        .where('uuid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .orderBy('createdDate', descending: true)
+        .limit(1)
+        .get();
+    setState(() {
+      isCancelled = snap.docs[0]['isCancelled'];
+      isApproval = snap.docs[0]['quickapproval'];
+    });
+  }
+
   String username = '';
   bool isShow = false;
   void fetch() async {
@@ -21,6 +39,20 @@ class _notificationpageState extends State<notificationpage> {
       isShow = true;
       username = snapshot.docs[0]['announcement'];
     });
+  }
+
+  String usernames = '';
+  void fetches() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Users Data')
+        .where('uuid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      setState(() {
+        usernames = snapshot.docs[0]['name'];
+      });
+    }
   }
 
   Future<void> getStatus() async {
@@ -41,6 +73,8 @@ class _notificationpageState extends State<notificationpage> {
   @override
   initState() {
     getStatus();
+    fetches();
+    notifyData();
     // fetch();
     super.initState();
   }
@@ -61,6 +95,17 @@ class _notificationpageState extends State<notificationpage> {
             color: Color(0xffffffff),
           ),
         ),
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xffffffff),
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => homeScreen(
+                        isShow: isShow,
+                      )));
+            }),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -129,7 +174,7 @@ class _notificationpageState extends State<notificationpage> {
                         width: size.width * 0.02,
                       ),
                       Text(
-                        'Maryam',
+                        usernames,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -157,28 +202,38 @@ class _notificationpageState extends State<notificationpage> {
                       SizedBox(
                         width: size.width * 0.12,
                       ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: size.width * 0.04,
-                            height: size.height * 0.04,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff009e10),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          Icon(
-                            Icons.check,
-                            size: 10,
-                            color: Color(0xffffffff),
-                          )
-                        ],
-                      ),
+                      isCancelled
+                          ? Icon(
+                              Icons.dangerous_outlined,
+                              color: Colors.red,
+                            )
+                          : isApproval
+                              ? Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: size.width * 0.04,
+                                      height: size.height * 0.04,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff009e10),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 1,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.check,
+                                      size: 10,
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ],
+                                )
+                              : Icon(
+                                  Icons.access_time,
+                                  color: Color(0xffffffff),
+                                ),
                       SizedBox(
                         width: size.width * 0.02,
                       ),
