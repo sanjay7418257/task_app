@@ -62,9 +62,14 @@ class _chatscreenState extends State<chatscreen> {
               SizedBox(
                 height: size.height * 0.01,
               ),
-              Column(
-                children: List.generate(8, (index) => chatwidget()),
-              )
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return chatwidget();
+                },
+              ),
             ],
           ),
         ),

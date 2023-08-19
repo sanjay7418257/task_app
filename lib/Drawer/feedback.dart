@@ -9,6 +9,7 @@ import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:task_app/Modal/feedbackmodal.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:ui' as ui;
+import '../Modal/applyleave_notify.dart';
 import 'ratingwidget.dart';
 
 class feedback extends StatefulWidget {
@@ -34,6 +35,45 @@ class _feedbackState extends State<feedback> {
   TextEditingController _colleagues = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    String appliedUsername = '';
+    Future<void> FeedbackNotify() async {
+      NotifyAccess notifyvalue = NotifyAccess.appliedStatus;
+      String enumValue = notifyvalue.toString();
+      var snapshot = await FirebaseFirestore.instance
+          .collection('Users Data')
+          .where('uuid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      setState(() {
+        appliedUsername = snapshot.docs[0]['name'];
+      });
+      var i = uuid.v4();
+      var authority = [
+        'OebtkLEqFMNVE6O4AivOJG4ixKq2',
+        'yBv3E1fQ2wT2hKJ1UVl2wgksUTl2'
+      ];
+      var s = 0;
+      for (s; s <= authority.length - 1; s++) {
+        var a = ApplyLeaveNotify(
+          name: '$appliedUsername applied for leave',
+          leaveDate: [],
+          alternateDate: [],
+          id: i,
+          image: '',
+          senderUid: FirebaseAuth.instance.currentUser!.uid,
+          recieverUid: authority[s],
+          notifyStatus: enumValue,
+          notifyBody: appliedUsername,
+          createdDate: DateTime.now(),
+        );
+        await FirebaseFirestore.instance
+            .collection('Users Data')
+            .doc(authority[s])
+            .collection('Notification')
+            .doc(i)
+            .set(a.tojson());
+      }
+    }
+
     GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -359,6 +399,7 @@ class _feedbackState extends State<feedback> {
                       'four': four,
                       'five': five,
                     });
+                    FeedbackNotify();
                     cleartext();
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => feedback()));

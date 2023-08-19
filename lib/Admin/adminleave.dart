@@ -414,12 +414,15 @@ class _adminleaveState extends State<adminleave> {
                         .get(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Column(
-                          children: List.generate(
-                              snapshot.data!.docs.length,
-                              (index) => leavewidget(
-                                    snapped: snapshot.data!.docs[index],
-                                  )),
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return leavewidget(
+                              snapped: snapshot.data!.docs[index],
+                            );
+                          },
                         );
                       }
                       return Center(
@@ -468,12 +471,15 @@ class _adminleaveState extends State<adminleave> {
                         FirebaseFirestore.instance.collection('Feedback').get(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Column(
-                          children: List.generate(
-                              snapshot.data!.docs.length,
-                              (index) => feedbackwidget(
-                                    feedbackdata: snapshot.data!.docs[index],
-                                  )),
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return feedbackwidget(
+                              feedbackdata: snapshot.data!.docs[index],
+                            );
+                          },
                         );
                       }
                       return Center(
@@ -524,9 +530,13 @@ class _adminleaveState extends State<adminleave> {
                     height: size.height * 0.01,
                   ),
                   if (history)
-                    Column(
-                      children:
-                          List.generate(3, (index) => const historyfeedback()),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return historyfeedback();
+                      },
                     ),
                   SizedBox(
                     height: size.height * 0.03,

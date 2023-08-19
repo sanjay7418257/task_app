@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
+import '../Modal/applyleave_notify.dart';
 import '../Modal/leavemodal.dart';
 import '../screens/homescreen.dart';
 import 'trackpage.dart';
@@ -17,6 +18,45 @@ class leavePage extends StatefulWidget {
 }
 
 class _leavePageState extends State<leavePage> {
+  String appliedUsername = '';
+  Future<void> LeaveNotify() async {
+    NotifyAccess notifyvalue = NotifyAccess.appliedStatus;
+    String enumValue = notifyvalue.toString();
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Users Data')
+        .where('uuid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      appliedUsername = snapshot.docs[0]['name'];
+    });
+    var i = uuid.v4();
+    var authority = [
+      'OebtkLEqFMNVE6O4AivOJG4ixKq2',
+      'yBv3E1fQ2wT2hKJ1UVl2wgksUTl2'
+    ];
+    var s = 0;
+    for (s; s <= authority.length - 1; s++) {
+      var a = ApplyLeaveNotify(
+        name: '$appliedUsername applied for leave',
+        leaveDate: Leavedate,
+        alternateDate: Alternatedate,
+        id: i,
+        image: '',
+        senderUid: FirebaseAuth.instance.currentUser!.uid,
+        recieverUid: authority[s],
+        notifyStatus: enumValue,
+        notifyBody: appliedUsername,
+        createdDate: DateTime.now(),
+      );
+      await FirebaseFirestore.instance
+          .collection('Users Data')
+          .doc(authority[s])
+          .collection('Notification')
+          .doc(i)
+          .set(a.tojson());
+    }
+  }
+
   Color ccolor = Color(0xff5200ff);
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
@@ -651,6 +691,7 @@ class _leavePageState extends State<leavePage> {
                             );
                           }));
                     }
+                    LeaveNotify();
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => homeScreen()));
 

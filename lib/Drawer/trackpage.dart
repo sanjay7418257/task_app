@@ -31,74 +31,76 @@ class _trackpageState extends State<trackpage> {
           ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.09,
-              vertical: size.height * 0.02,
-            ),
-            child: const Text(
-              'Applied Leave',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xffffffff),
-                fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.09,
+                vertical: size.height * 0.02,
+              ),
+              child: const Text(
+                'Applied Leave',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xffffffff),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-          //
-          FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('Leave details')
-                .where('uuid',
-                    isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                .get(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return SizedBox(
-                height: size.height * 0.3,
-                child: ListView.builder(
+            //
+            FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('Leave details')
+                  .where('uuid',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ListView.builder(
+                  //scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return trackwidget(
                       snapData: snapshot.data!.docs[index],
                     );
                   },
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            height: size.height * 0.1,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.09,
-              vertical: size.height * 0.02,
+                );
+              },
             ),
-            child: const Text(
-              'History',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xffffffff),
-                fontWeight: FontWeight.w600,
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.09,
+                vertical: size.height * 0.02,
+              ),
+              child: const Text(
+                'History',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xffffffff),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-          Column(
-            children: List.generate(
-              2,
-              (index) => historywidget(),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return historywidget();
+              },
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

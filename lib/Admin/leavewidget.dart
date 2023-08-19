@@ -38,6 +38,8 @@ class _leavewidgetState extends State<leavewidget> {
 
   @override
   Widget build(BuildContext context) {
+    final date = widget.snapped['createdDate'] as Timestamp;
+    final createdDate = DateFormat.MMMd().format(date.toDate());
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
@@ -47,7 +49,7 @@ class _leavewidgetState extends State<leavewidget> {
             vertical: size.height * 0.01,
           ),
           child: Container(
-            height: seedetails ? size.height * 0.9 : size.height * 0.082,
+            height: seedetails ? size.height * 0.95 : size.height * 0.082,
             width: size.width * 0.9,
             decoration: BoxDecoration(
               color: const Color(0xff1c1c1e),
@@ -75,12 +77,17 @@ class _leavewidgetState extends State<leavewidget> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: size.height * 0.014),
-                          child: Text(
-                            username,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffffffff),
+                          child: SizedBox(
+                            width: 35,
+                            child: Text(
+                              softWrap: false,
+                              overflow: TextOverflow.visible,
+                              username,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xffffffff),
+                              ),
                             ),
                           ),
                         ),
@@ -101,12 +108,15 @@ class _leavewidgetState extends State<leavewidget> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: size.height * 0.02),
-                          child: const Text(
-                            'Oct 19',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffffffff),
+                          child: SizedBox(
+                            width: 35,
+                            child: Text(
+                              createdDate,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xffffffff),
+                              ),
                             ),
                           ),
                         ),
@@ -138,7 +148,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        right: size.width * 0.62,
+                        right: size.width * 0.65,
                       ),
                       child: const Text(
                         'Leave',
@@ -267,7 +277,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        right: size.width * 0.48,
+                        right: size.width * 0.52,
                       ),
                       child: const Text(
                         'Leave option',
@@ -285,7 +295,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        left: size.width * 0.03,
+                        left: size.width * 0.01,
                       ),
                       child: Container(
                         height: size.height * 0.05,
@@ -320,7 +330,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        right: size.width * 0.60,
+                        right: size.width * 0.65,
                       ),
                       child: const Text(
                         'Role',
@@ -338,7 +348,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        left: size.width * 0.03,
+                        left: size.width * 0.01,
                       ),
                       child: Container(
                         height: size.height * 0.05,
@@ -365,7 +375,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        right: size.width * 0.56,
+                        right: size.width * 0.60,
                       ),
                       child: const Text(
                         'Reason',
@@ -383,7 +393,7 @@ class _leavewidgetState extends State<leavewidget> {
                   if (seedetails)
                     Padding(
                       padding: EdgeInsets.only(
-                        left: size.width * 0.03,
+                        left: size.width * 0.01,
                       ),
                       child: Container(
                         height: size.height * 0.15,
@@ -464,7 +474,7 @@ class _leavewidgetState extends State<leavewidget> {
                                 if (widget.snapped['approval'][0] ==
                                         FirebaseAuth
                                             .instance.currentUser!.uid &&
-                                    widget.snapped['approval'][0] ==
+                                    widget.snapped['approval'][1] ==
                                         FirebaseAuth
                                             .instance.currentUser!.uid) {
                                   setState(() {

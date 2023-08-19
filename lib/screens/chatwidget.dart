@@ -14,6 +14,7 @@ class _chatwidgetState extends State<chatwidget> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return ListTile(
+      visualDensity: VisualDensity(vertical: -4),
       contentPadding: EdgeInsets.symmetric(
         vertical: size.height * 0.01,
         horizontal: size.width * 0.03,

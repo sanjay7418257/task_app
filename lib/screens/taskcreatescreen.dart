@@ -6,6 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:task_app/Modal/taskcreate.dart';
 import 'package:uuid/uuid.dart';
 
+import '../Modal/applyleave_notify.dart';
 import '../Modal/remind.dart';
 import 'calendarpopup.dart';
 import 'homescreen.dart';
@@ -20,6 +21,45 @@ class taskcreate extends StatefulWidget {
 }
 
 class _taskcreateState extends State<taskcreate> {
+  String appliedUsername = '';
+  Future<void> taskNotify() async {
+    NotifyAccess notifyvalue = NotifyAccess.appliedStatus;
+    String enumValue = notifyvalue.toString();
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Users Data')
+        .where('uuid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      appliedUsername = snapshot.docs[0]['name'];
+    });
+    var i = uuid.v4();
+    var authority = [
+      'emafeJG9nuPB2pZB7mSGRJ7owJn2',
+      '1vTCmEi5VLS3SSiuc223k9FlaUN2',
+    ];
+    var s = 0;
+    for (s; s <= authority.length - 1; s++) {
+      var a = ApplyLeaveNotify(
+        name: '$appliedUsername applied for leave',
+        leaveDate: [],
+        alternateDate: [],
+        id: i,
+        image: '',
+        senderUid: FirebaseAuth.instance.currentUser!.uid,
+        recieverUid: authority[s],
+        notifyStatus: enumValue,
+        notifyBody: appliedUsername,
+        createdDate: DateTime.now(),
+      );
+      await FirebaseFirestore.instance
+          .collection('Users Data')
+          .doc(authority[s])
+          .collection('Notification')
+          .doc(i)
+          .set(a.tojson());
+    }
+  }
+
   final createController = TextEditingController();
   final ReminderController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
@@ -284,6 +324,7 @@ class _taskcreateState extends State<taskcreate> {
                                                 .collection('task create')
                                                 .doc(i)
                                                 .set(a.tojson());
+                                            taskNotify();
                                             cleartext();
                                             Navigator.of(context).push(
                                                 MaterialPageRoute(

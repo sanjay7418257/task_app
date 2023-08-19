@@ -77,12 +77,17 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: size.height * 0.02),
-                          child: Text(
-                            username,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffffffff),
+                          child: SizedBox(
+                            width: 35,
+                            child: Text(
+                              softWrap: false,
+                              overflow: TextOverflow.visible,
+                              username,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xffffffff),
+                              ),
                             ),
                           ),
                         ),
@@ -103,12 +108,15 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: size.height * 0.02),
-                          child: const Text(
-                            'Oct 19',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffffffff),
+                          child: const SizedBox(
+                            width: 35,
+                            child: Text(
+                              'Oct 19',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xffffffff),
+                              ),
                             ),
                           ),
                         ),
@@ -197,17 +205,12 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                       height: size.height * 0.03,
                     ),
                   if (seedetails)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.03,
-                      ),
-                      child: const Text(
-                        'Colleagues Name',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xffffffff),
-                        ),
+                    const Text(
+                      'Colleagues Name',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xffffffff),
                       ),
                     ),
                   if (seedetails)
@@ -215,26 +218,21 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                       height: size.height * 0.01,
                     ),
                   if (seedetails)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.03,
-                      ),
-                      child: Container(
-                        height: size.height * 0.05,
-                        width: size.width * 0.74,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xffffffff),
-                          ),
-                          borderRadius: BorderRadius.circular(10),
+                    Container(
+                      height: size.height * 0.05,
+                      width: size.width * 0.74,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xffffffff),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            widget.feedbackdata['colleaguesname'],
-                            style: const TextStyle(
-                              color: Color(0xffffffff),
-                            ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.feedbackdata['colleaguesname'],
+                          style: const TextStyle(
+                            color: Color(0xffffffff),
                           ),
                         ),
                       ),
@@ -244,17 +242,12 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                       height: size.height * 0.03,
                     ),
                   if (seedetails)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.03,
-                      ),
-                      child: const Text(
-                        'Feedback',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffffffff),
-                        ),
+                    const Text(
+                      'Feedback',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xffffffff),
                       ),
                     ),
                   if (seedetails)
@@ -262,25 +255,20 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                       height: size.height * 0.01,
                     ),
                   if (seedetails)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.03,
-                      ),
-                      child: Container(
-                        height: size.height * 0.15,
-                        width: size.width * 0.74,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xffffffff),
-                          ),
-                          borderRadius: BorderRadius.circular(10),
+                    Container(
+                      height: size.height * 0.15,
+                      width: size.width * 0.74,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xffffffff),
                         ),
-                        child: Center(
-                          child: Text(
-                            widget.feedbackdata['feedback'],
-                            style: const TextStyle(
-                              color: Color(0xffffffff),
-                            ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.feedbackdata['feedback'],
+                          style: const TextStyle(
+                            color: Color(0xffffffff),
                           ),
                         ),
                       ),
@@ -358,17 +346,12 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                       height: size.height * 0.02,
                     ),
                   if (seedetails)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.03,
-                      ),
-                      child: const Text(
-                        'Signature',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xffffffff),
-                        ),
+                    const Text(
+                      'Signature',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xffffffff),
                       ),
                     ),
                   if (seedetails)
@@ -376,22 +359,17 @@ class _feedbackwidgetState extends State<feedbackwidget> {
                       height: size.height * 0.01,
                     ),
                   if (seedetails)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.03,
+                    Container(
+                      height: size.height * 0.20,
+                      width: size.width * 0.74,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xffffffff),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Container(
-                        height: size.height * 0.20,
-                        width: size.width * 0.74,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xffffffff),
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Image.memory(imageData!),
-                        ),
+                      child: Center(
+                        child: Image.memory(imageData!),
                       ),
                     ),
                 ],

@@ -23,6 +23,21 @@ class _taskcompleteState extends State<taskcomplete> {
   }
 
   final createController = TextEditingController();
+  void taskcreate() async {
+    var id = Uuid().v4();
+    await FirebaseFirestore.instance
+        .collection('task create')
+        .doc(widget.querySnapshot['id'])
+        .collection('steps')
+        .doc(id)
+        .set({
+      'id': id,
+      'name': createController.text,
+      'iscompleted': false,
+      'selectedDate': _selectedDate,
+      'createdDate': DateTime.now(),
+    });
+  }
 
   DateTime _selectedDate = DateTime.now();
   final TextEditingController _search = TextEditingController();
@@ -119,9 +134,6 @@ class _taskcompleteState extends State<taskcomplete> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                   child: TextFormField(
-                    onTap: () {
-                      print(widget.querySnapshot['name']);
-                    },
                     controller: createController,
                     cursorColor: const Color(0xffffffff),
                     style: const TextStyle(
@@ -246,20 +258,7 @@ class _taskcompleteState extends State<taskcomplete> {
                               Size(size.width * 0.28, size.height * 0.05),
                         ),
                         onPressed: () async {
-                          var id = Uuid().v4();
-                          print(createController.text);
-                          await FirebaseFirestore.instance
-                              .collection('task create')
-                              .doc(widget.querySnapshot['id'])
-                              .collection('steps')
-                              .doc(id)
-                              .set({
-                            'id': id,
-                            'name': createController.text,
-                            'iscompleted': false,
-                            'selectedDate': _selectedDate,
-                            'createdDate': DateTime.now(),
-                          });
+                          taskcreate();
                           cleartext();
                           setState(() {
                             _shouldDisplay = !_shouldDisplay;
